@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Portal | Campus Grievance</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #4338ca 100%);
+      min-height: 100vh;
+      color: #f8fafc;
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+      color: #0f172a;
+    }
+    .custom-navbar {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .btn-gradient {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      border: none;
+      color: white;
+      font-weight: 600;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn-gradient:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+      color: white;
+    }
+    .table thead {
+      background: #1e1b4b;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark custom-navbar px-4 sticky-top d-flex justify-content-between">
+  <span class="navbar-brand mb-0 h1 fw-bold">🎓 Campus Grievance Desk</span>
+  <a href="/logout" class="btn btn-outline-danger btn-sm px-3 rounded-pill">Logout</a>
+</nav>
+
+<div class="container py-5">
+  <div class="row g-4">
+    <!-- Complaint Form -->
+    <div class="col-lg-7">
+      <div class="glass-card p-4 h-100">
+        <h4 class="fw-bold text-indigo mb-3" style="color: #3730a3;">Register Grievance</h4>
+        <p class="text-muted small mb-4">Facing an issue on campus? Submit below for administration review.</p>
+        
+        <form action="/submit-complaint" method="POST">
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Category</label>
+            <select name="category" class="form-select border-2" required>
+              <option value="Hostel & Mess">Hostel & Mess</option>
+              <option value="Wi-Fi / Network">Wi-Fi / Network</option>
+              <option value="Lab Equipment">Lab Equipment</option>
+              <option value="Academic">Academic</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Issue Subject</label>
+            <input type="text" name="subject" class="form-control border-2" placeholder="e.g. Wi-Fi down in Block B" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Description</label>
+            <textarea name="description" class="form-control border-2" rows="3" placeholder="Mention room number, exact problem details..." required></textarea>
+          </div>
+          
+          <!-- Anonymous Checkbox -->
+          <div class="form-check p-3 rounded-3 mb-4" style="background: #eef2ff; border: 1px solid #c7d2fe;">
+            <input class="form-check-input ms-0 me-2" type="checkbox" name="is_anonymous" value="true" id="anonCheck">
+            <label class="form-check-label fw-semibold text-dark" for="anonCheck">
+              🕵️ Hide my details from Admin (Post Anonymously)
+            </label>
+            <div class="text-muted small ms-4">Admin will NOT see your name or email. Only your issue will be visible.</div>
+          </div>
+
+          <button type="submit" class="btn btn-gradient w-100 py-2 rounded-3">Submit Grievance Ticket</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Info Banner -->
+    <div class="col-lg-5">
+      <div class="glass-card p-4 h-100 d-flex flex-column justify-content-between">
+        <div>
+          <h5 class="fw-bold text-dark mb-3">Live Resolution Desk</h5>
+          <div class="p-3 mb-3 rounded-3" style="background: #e0e7ff; color: #3730a3; border-left: 4px solid #4f46e5;">
+            <strong>⚡ 24x7 Digital Desk</strong>
+            <div class="small mt-1">Direct integration with University administration database.</div>
+          </div>
+          <ul class="list-unstyled small text-muted d-flex flex-column gap-2">
+            <li>✓ Unique Ticket ID generated automatically</li>
+            <li>✓ Real-time status sync via MySQL backend</li>
+            <li>✓ Anonymous option protects your privacy</li>
+            <li>✓ Track latest submitted ticket directly below</li>
+          </ul>
+        </div>
+        <div class="text-center p-3 rounded-3 bg-light border">
+          <span class="badge bg-success mb-1">Server Online</span>
+          <p class="small text-muted mb-0">Localhost:8080 active & sync ready</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status Tracking Table (Shows Only Latest Ticket) -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="glass-card p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="fw-bold mb-0">📋 My Recent Complaint & Live Status</h5>
+          <button class="btn btn-sm btn-outline-dark rounded-pill px-3" onclick="location.reload()">↻ Refresh</button>
+        </div>
+        <div class="table-responsive rounded-3 border">
+          <table class="table table-hover align-middle mb-0">
+            <thead>
+              <tr>
+                <th class="py-3">Ticket ID</th>
+                <th>Category</th>
+                <th>Subject</th>
+                <th>Description</th>
+                <th>Privacy</th>
+                <th>Current Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!--STUDENT_COMPLAINTS_ROWS-->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
